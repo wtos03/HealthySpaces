@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "Alexa_for_IoT-Intro",
+			"path": "../../Alexa_for_IoT-Intro"
+		},
+		{
+			"name": "Smart-Thermostat",
+			"path": ".."
+		},
+		{
+			"name": "Getting-Started",
+			"path": "../../Getting-Started"
+		}
+	],
+	"settings": {}
+}

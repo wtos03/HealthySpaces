@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>"WorkSpace Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script type = "text/javascript"
+       src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+ 
+    <script type="text/javascript">
+    $(window).load(function() {
+            thingName = document.getElementById("roomNames").value;
+            if ( thingName == "")
+            {
+                thingName = "0123a8024945e75c01";
+                document.getElementById("txtField").value = thingName;
+            }
+    });
+ 
+      $(document).ready(function() {
+         $("#register").click(function(event){
+ 
+            currentvalue = document.getElementById('register').innerHTML;
+            yourName = document.getElementById('name').value;
+             
+            // trying to add the value from text box 
+            thingName = document.getElementById("roomNames").value;
+            console.log(thingName);
+            var mydata={"action":"on","wsOccupancy":true,"userName":yourName, "thingname":thingName};
+            console.log(mydata);
+            document.getElementById("status").innerHTML= `Workspace Usage : ${yourName}`;
+            document.getElementById("status").setAttribute("class","button is-rounded is-large is-fullwidth is-loading");
+            $.ajax( {
+                type: 'POST',
+                url:'https://u2gtqb6j39.execute-api.us-west-2.amazonaws.com/Dev/shadow-state',
+                contentType: 'application/json',
+                crossDomain: true,
+                processData: false,
+                dataType: "json",
+                data: JSON.stringify(mydata),
+                success:function(data) {
+                console.log(" on success");
+                document.getElementById("status").setAttribute("class","button is-success is-rounded is-large is-fullwidth");
+                },
+                error:function(data) {
+                    console.log(" on fail;");
+                    document.getElementById("status").setAttribute("class","button is-success is-rounded is-large is-fullwidth");
+                }
+            });
+        });
+          
+          //--------- Add Finished usage 
+            $("#cancelregister").click(function(event){
+ 
+            currentvalue = document.getElementById('register').innerHTML;
+            yourName = document.getElementById('name').value;
+             
+            // trying to add the value from text box 
+            thingName = document.getElementById("roomNames").value;
+            console.log(thingName);
+            var mydata={"action":"off","wsOccupancy":false,"userName":yourName, "thingname":thingName};
+            console.log(mydata);
+            document.getElementById("status").innerHTML= `Workspace Usage : None`;
+            document.getElementById("status").setAttribute("class","button is-rounded is-large is-fullwidth is-loading");
+            $.ajax( {
+                type: 'POST',
+                url:'https://u2gtqb6j39.execute-api.us-west-2.amazonaws.com/Dev/shadow-state',
+                contentType: 'application/json',
+                crossDomain: true,
+                processData: false,
+                dataType: "json",
+                data: JSON.stringify(mydata),
+                success:function(data) {
+                console.log(" on success");
+                document.getElementById("status").setAttribute("class","button is-success is-rounded is-large is-fullwidth");
+                },
+                error:function(data) {
+                    console.log(" on fail;");
+                    document.getElementById("status").setAttribute("class","button is-success is-rounded is-large is-fullwidth");
+                }
+            });
+        });
+          
+          //---------- End Add 
+          
+ 
+          // Click check workspace usage
+         $("#status").click(function(event){
+            console.log("Checking Workspace status");
+            //check the status of Shadow
+            // thingName = "ESP32"
+            thingName = document.getElementById("roomNames").value;
+            console.log(`thingname=${thingName}`);
+            $.ajax( {
+              type: 'GET',
+               url:'https://u2gtqb6j39.execute-api.us-west-2.amazonaws.com/Dev/shadow-state',
+               contentType: 'application/json',
+               crossDomain: true,
+               processData: false,
+               dataType: "json",
+               data: `thingname=${thingName}`,
+               success:function(data) {
+                console.log("success");
+                console.log(data.status);
+                document.getElementById("status").innerHTML=data.status;
+                if (data.status == "Available" )
+                {
+                  document.getElementById("status").setAttribute("class","button is-success is-rounded is-large is-fullwidth");
+                }
+                else{
+            
+                  document.getElementById("status").setAttribute("class","button is-danger is-rounded is-large is-fullwidth");
+                }
+               },
+               error:function(data) {
+                 console.log("error");
+               }
+            });
+        });
+ }); 
+ 
+</script>
+  </head>
+  <body>
+    <div class="columns is-mobile">
+    <div class="column is-2">
+    <!-- First Column-->
+    </div>
+    <div class="column is-8">
+      <br><br>
+     <center>
+      <h2 class="title is-2" style="text-align: center;">Workspace Registration</h2>
+         <br></center>
+        <p>
+        Choose workspace name:
+        &nbsp     
+        <select name="roomNames" id="roomNames"  style="padding: 8px;">
+            <option value="0123a8024945e75c01">    Binary Room</option>
+            <option value="TT">    Analog Room</option>
+        </select> 
+         <br><br>
+        Enter Your Name:
+        &nbsp     
+        <input name="name" type="text" maxlength="512" id="name" class="searchField" style="padding: 8px;" />
+         </p>
+    
+      <br><br>
+      <a class="button is-info is-rounded is-large is-fullwidth" id="register" value="on">Registration</a>
+      <br><br>
+      <a class="button is-info is-rounded is-large is-fullwidth" id="cancelregister" value="on">Finished</a>
+      <br><br>
+      <a class="button is-info is-rounded is-large is-fullwidth" id="status" value="on">Occupy : None </a>
+    </center>
+    </div>
+    <div class="column is-2">
+    <!-- Third Column-->
+    </div>
+  </div>
+  </body>
+</html>
