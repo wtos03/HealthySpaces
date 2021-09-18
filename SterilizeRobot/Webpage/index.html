@@ -31,7 +31,7 @@
             console.log(thingName);
             var mydata={"action":"on","wsOccupancy":true,"userName":yourName, "thingname":thingName};
             console.log(mydata);
-            document.getElementById("status").innerHTML= `Workspace Usage : ${yourName}`;
+            document.getElementById("status").innerHTML= `Occupied by : ${yourName}`;
             document.getElementById("status").setAttribute("class","button is-rounded is-large is-fullwidth is-loading");
             $.ajax( {
                 type: 'POST',
@@ -43,7 +43,7 @@
                 data: JSON.stringify(mydata),
                 success:function(data) {
                 console.log(" on success");
-                document.getElementById("status").setAttribute("class","button is-success is-rounded is-large is-fullwidth");
+                document.getElementById("status").setAttribute("class","button is-success is-danger is-rounded is-large is-fullwidth");
                 },
                 error:function(data) {
                     console.log(" on fail;");
@@ -63,7 +63,7 @@
             console.log(thingName);
             var mydata={"action":"off","wsOccupancy":false,"userName":yourName, "thingname":thingName};
             console.log(mydata);
-            document.getElementById("status").innerHTML= `Workspace Usage : None`;
+            document.getElementById("status").innerHTML= `Available`;
             document.getElementById("status").setAttribute("class","button is-rounded is-large is-fullwidth is-loading");
             $.ajax( {
                 type: 'POST',
